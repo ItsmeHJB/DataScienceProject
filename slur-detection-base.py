@@ -61,6 +61,9 @@ for df in reader:
         # print(wet_record.content_stream().read().decode('utf-8') + '\n')
 
         text = get_WET_text(wet_record)
-        if any(term in text for term in slurs):
-            print(wet_record.rec_headers.get_header('WARC-Target-URI'))
-            print(text)
+        # Basic contains check - issues with offensive terms list and context
+        for term in slurs:
+            if term in text:
+                print(wet_record.rec_headers.get_header('WARC-Target-URI'))
+                print("Term: " + term)
+                print(text)

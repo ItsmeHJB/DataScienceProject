@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ecd83a3f-3b6c-48f2-ba9b-a8c29b0727fc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Slur extraction-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/Slur extraction-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/slur_subset.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/slur_subset.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Slur extraction.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Slur extraction.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/slur-detection-base.py" beforeDir="false" afterPath="$PROJECT_DIR$/slur-detection-base.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -83,16 +80,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/slur-detection-base.py</url>
-          <line>63</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
