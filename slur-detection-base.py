@@ -23,14 +23,19 @@ prefix_url = 'https://data.commoncrawl.org/'
 warc_match = re.compile('warc')
 wet_sub = 'wet'
 ext_sub = 'warc.wet'
-
 slurs_file = "Data/slur_subset.csv"
-f_len = sum(1 for line in open(slurs_file)) - 1
-sample_size = round(f_len/5)
-skip = sorted(random.sample(range(1, f_len+1), f_len-sample_size))
-slurs = pd.read_csv(slurs_file, skiprows=skip)['word'].tolist()
 
-reader = pd.read_csv('Data/b75c614d-bb12-4083-9664-3ea424f6d4ce.csv', usecols=[0], chunksize=1000)
+read_all = True
+if read_all:
+    slurs = pd.read_csv(slurs_file)['word'].tolist()
+else:
+    f_len = sum(1 for line in open(slurs_file)) - 1
+    sample_size = round(f_len/5)
+    skip = sorted(random.sample(range(1, f_len+1), f_len-sample_size))
+    slurs = pd.read_csv(slurs_file, skiprows=skip)['word'].tolist()
+
+#reader = pd.read_csv('Data/b75c614d-bb12-4083-9664-3ea424f6d4ce.csv', usecols=[0], chunksize=1000)
+reader = pd.read_csv('Data/4bc54b17-39ca-4264-b522-6f0c4f46f1f1.csv', usecols=[0], chunksize=1000)
 for df in reader:
     for index, row in df.iterrows():
         # warc_url = prefix_url + row[0]
@@ -63,7 +68,7 @@ for df in reader:
         text = get_WET_text(wet_record)
         # Basic contains check - issues with offensive terms list and context
         for term in slurs:
-            if term in text:
+            if re.search(r'\b'+term+r'\b', text):
                 print(wet_record.rec_headers.get_header('WARC-Target-URI'))
                 print("Term: " + term)
-                print(text)
+                print(text[:25])
