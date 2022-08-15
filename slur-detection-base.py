@@ -1,6 +1,7 @@
 import pandas as pd
 import requests
 from warcio.archiveiterator import ArchiveIterator
+import warcio.exceptions
 import re
 import random
 
@@ -9,15 +10,28 @@ def get_file(url):
     return requests.get(url, stream=True)
 
 
+def wrapper(gen):
+    while True:
+        try:
+            yield next(gen)
+        except StopIteration:
+            break
+        except Exception as e:
+            print(e)  # or whatever kind of logging you want
+
+
 def get_record_with_header(warc_file, header, value):
-    for record in ArchiveIterator(warc_file.raw):
+    iterobject = wrapper(ArchiveIterator(warc_file.raw))
+    for record in iterobject:
         if record.rec_headers.get_header(header) == value:
             return record
 
 
 def get_WET_text(record):
-    return record.content_stream().read().decode('utf-8').lower()
-
+    if record:
+        return record.content_stream().read().decode('utf-8').lower()
+    else:
+        return None
 
 prefix_url = 'https://data.commoncrawl.org/'
 warc_match = re.compile('warc')
@@ -30,14 +44,20 @@ if read_all:
     slurs = pd.read_csv(slurs_file)['word'].tolist()
 else:
     f_len = sum(1 for line in open(slurs_file)) - 1
-    sample_size = round(f_len/5)
-    skip = sorted(random.sample(range(1, f_len+1), f_len-sample_size))
+    sample_size = round(f_len / 5)
+    skip = sorted(random.sample(range(1, f_len + 1), f_len - sample_size))
     slurs = pd.read_csv(slurs_file, skiprows=skip)['word'].tolist()
 
-#reader = pd.read_csv('Data/b75c614d-bb12-4083-9664-3ea424f6d4ce.csv', usecols=[0], chunksize=1000)
+# reader = pd.read_csv('Data/b75c614d-bb12-4083-9664-3ea424f6d4ce.csv', usecols=[0], chunksize=1000)
 reader = pd.read_csv('Data/4bc54b17-39ca-4264-b522-6f0c4f46f1f1.csv', usecols=[0], chunksize=1000)
+processed = 0
 for df in reader:
     for index, row in df.iterrows():
+        if processed < 37900:
+            processed += 1
+            continue
+        if processed % 100 == 0:
+            print("processed: " + str(processed))
         # warc_url = prefix_url + row[0]
         # warc_file = get_file(warc_url)
 
@@ -66,9 +86,16 @@ for df in reader:
         # print(wet_record.content_stream().read().decode('utf-8') + '\n')
 
         text = get_WET_text(wet_record)
-        # Basic contains check - issues with offensive terms list and context
-        for term in slurs:
-            if re.search(r'\b'+term+r'\b', text):
-                print(wet_record.rec_headers.get_header('WARC-Target-URI'))
-                print("Term: " + term)
-                print(text[:25])
+        if text is None:
+            processed += 1
+            continue
+        else:
+            # Basic contains check - issues with offensive terms list and context
+            for term in slurs:
+                if re.search(r'\b' + term + r'\b', text):
+                    print(wet_record.rec_headers.get_header('WARC-Target-URI'))
+                    print("Term: " + term)
+                    print(text[:25])
+        processed += 1
+
+print("Done :)")
