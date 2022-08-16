@@ -1,9 +1,9 @@
 import pandas as pd
 import requests
 from warcio.archiveiterator import ArchiveIterator
-import warcio.exceptions
 import re
 import random
+import time
 
 
 def get_file(url):
@@ -51,13 +51,15 @@ else:
 # reader = pd.read_csv('Data/b75c614d-bb12-4083-9664-3ea424f6d4ce.csv', usecols=[0], chunksize=1000)
 reader = pd.read_csv('Data/4bc54b17-39ca-4264-b522-6f0c4f46f1f1.csv', usecols=[0], chunksize=1000)
 processed = 0
+start = time.perf_counter()
 for df in reader:
     for index, row in df.iterrows():
-        if processed < 37900:
+        if processed <= 0:
             processed += 1
             continue
-        if processed % 100 == 0:
+        if processed % 1000 == 0:
             print("processed: " + str(processed))
+            print(f"time: {time.strftime('%H:%M:%S', time.gmtime(time.perf_counter() - start))}\n")
         # warc_url = prefix_url + row[0]
         # warc_file = get_file(warc_url)
 
@@ -95,7 +97,7 @@ for df in reader:
                 if re.search(r'\b' + term + r'\b', text):
                     print(wet_record.rec_headers.get_header('WARC-Target-URI'))
                     print("Term: " + term)
-                    print(text[:25])
+                    print(text[:25]+"\n")
         processed += 1
 
 print("Done :)")
