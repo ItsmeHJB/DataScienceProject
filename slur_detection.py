@@ -52,59 +52,53 @@ else:
 
 cols = ['word', 'wet-url']
 matches = pd.DataFrame(columns=cols)
-filename = "matches.csv"
+filename = "matches2.csv"
 
-# reader = pd.read_csv('Data/b75c614d-bb12-4083-9664-3ea424f6d4ce.csv', usecols=[0], chunksize=1000)
-reader = pd.read_csv('Data/4bc54b17-39ca-4264-b522-6f0c4f46f1f1.csv', usecols=[0], chunksize=1000)
+df = pd.read_csv('Data/198da78a-2deb-4fc7-b516-3c9363188510.csv')
 processed = 0
 found = 0
 start = time.perf_counter()
 
-for df in reader:
-    for index, row in df.iterrows():
-        # Use to skip to certain row index
-        if processed <= 542000:
-            processed += 1
-            continue
-        if processed % 1000 == 0:
-            print("processed: " + str(processed))
-            print(f"time: {time.strftime('%H:%M:%S', time.gmtime(time.perf_counter() - start))}")
-            print("found: " + str(found) + "\n")
-        # warc_url = prefix_url + row[0]
-        # warc_file = get_file(warc_url)
-
-        wet_url = prefix_url + re.sub(warc_match, ext_sub, re.sub(warc_match, wet_sub, row[0], count=1))
-        wet_file = get_file(wet_url)
-
-        # Get English WET record and print details
-        wet_record = get_record_with_header(
-            wet_file,
-            header='WARC-Identified-Content-Language',
-            value="eng"
-        )
-        # print(wet_record.rec_headers.get_header('WARC-Target-URI'))
-        # print(wet_record.content_stream().read().decode('utf-8') + '\n')
-
-        text = get_WET_text(wet_record)
-        if text is None:
-            processed += 1
-            continue
-        else:
-            # Basic contains check - issues with offensive terms list and context
-            for term in slurs:
-                if re.search(r'\b' + term + r'\b', text):
-                    data = [term, wet_url]
-                    matches.loc[len(matches.index)] = data
-                    matches.to_csv(filename, mode='a', index=False, header=False)
-                    matches = matches[0:0]
-                    # print(wet_record.rec_headers.get_header('WARC-Target-URI'))
-                    # print("Term: " + term)
-                    # print(text[:25]+"\n")
-                    found += 1
-        # if matches.shape[0] >= 5:
-        #     matches.to_csv(filename, mode='a', index=False, header=False)
-        #     matches = matches[0:0]
+for index, row in df.iterrows():
+    # Use to skip to certain row index
+    if processed <= 0:
         processed += 1
+        continue
+    if processed % 1000 == 0:
+        print("processed: " + str(processed))
+        print(f"time: {time.strftime('%H:%M:%S', time.gmtime(time.perf_counter() - start))}")
+        print("found: " + str(found) + "\n")
+
+    wet_url = prefix_url + re.sub(warc_match, ext_sub, re.sub(warc_match, wet_sub, row[0], count=1))
+    wet_file = get_file(wet_url)
+
+    # Get English WET record and print details
+    wet_record = get_record_with_header(
+        wet_file,
+        header='WARC-Identified-Content-Language',
+        value="eng"
+    )
+
+    text = get_WET_text(wet_record)
+    if text is None:
+        processed += 1
+        continue
+    else:
+        # Basic contains check - issues with offensive terms list and context
+        for term in slurs:
+            if re.search(r'\b' + term + r'\b', text):
+                data = [term, wet_url]
+                matches.loc[len(matches.index)] = data
+                matches.to_csv(filename, mode='a', index=False, header=False)
+                matches = matches[0:0]
+                # print(wet_record.rec_headers.get_header('WARC-Target-URI'))
+                # print("Term: " + term)
+                # print(text[:25]+"\n")
+                found += 1
+    # if matches.shape[0] >= 5:
+    #     matches.to_csv(filename, mode='a', index=False, header=False)
+    #     matches = matches[0:0]
+    processed += 1
 
 matches.to_csv(filename, mode='a', index=False, header=False)
 print("Done :)")
