@@ -20,13 +20,6 @@ def wrapper(gen):
             print(e)
 
 
-def get_record_with_header(warc_file, header, value):
-    iterobject = wrapper(ArchiveIterator(warc_file.raw))
-    for record in iterobject:
-        if record.rec_headers.get_header(header) == value:
-            return record
-
-
 def get_WET_text(record):
     if record:
         # Reads text, decodes it using utf-8, makes it lowercase
@@ -40,65 +33,78 @@ warc_match = re.compile('warc')
 wet_sub = 'wet'
 ext_sub = 'warc.wet'
 slurs_file = "Data/slur_subset.csv"
+large_slurs_file = "Data/slur_subset_large.csv"
 
 read_all = True
 if read_all:
     slurs = pd.read_csv(slurs_file)['word'].tolist()
+    large_slurs = pd.read_csv(large_slurs_file)['word'].tolist()
 else:
     f_len = sum(1 for line in open(slurs_file)) - 1
     sample_size = round(f_len / 5)
     skip = sorted(random.sample(range(1, f_len + 1), f_len - sample_size))
     slurs = pd.read_csv(slurs_file, skiprows=skip)['word'].tolist()
 
-cols = ['word', 'wet-url']
+    f_len = sum(1 for line in open(large_slurs_file)) - 1
+    sample_size = round(f_len / 5)
+    skip = sorted(random.sample(range(1, f_len + 1), f_len - sample_size))
+    large_slurs = pd.read_csv(large_slurs_file, skiprows=skip)['word'].tolist()
+
+cols = ['word', 'text']
 matches = pd.DataFrame(columns=cols)
-filename = "matches2.csv"
+small_filename = "matches3.csv"
+large_filename = "matches_large3.csv"
 
-df = pd.read_csv('Data/198da78a-2deb-4fc7-b516-3c9363188510.csv')
+df = pd.read_csv('Data/wet.paths', sep=':-\s*', names=['wet-url'], engine="python")
 processed = 0
-found = 0
+found_small = 0
+found_large = 0
 start = time.perf_counter()
+number_of_processses = 60
 
+random.seed(10)
 for index, row in df.iterrows():
     # Use to skip to certain row index
-    if processed <= 0:
+    if processed < 25:
         processed += 1
         continue
-    if processed % 1000 == 0:
+    if processed % 1 == 0:
         print("processed: " + str(processed))
         print(f"time: {time.strftime('%H:%M:%S', time.gmtime(time.perf_counter() - start))}")
-        print("found: " + str(found) + "\n")
+        print("small found: " + str(found_small))
+        print("large found: " + str(found_large) + "\n")
 
-    wet_url = prefix_url + re.sub(warc_match, ext_sub, re.sub(warc_match, wet_sub, row[0], count=1))
+    wet_url = prefix_url + row[0]
     wet_file = get_file(wet_url)
 
-    # Get English WET record and print details
-    wet_record = get_record_with_header(
-        wet_file,
-        header='WARC-Identified-Content-Language',
-        value="eng"
-    )
+    iterobject = wrapper(ArchiveIterator(wet_file.raw))
+    for record in iterobject:
+        if record.rec_headers.get_header('WARC-Identified-Content-Language') == 'eng':
+            if random.random() <= 0.25:
+                # Get text, decode, lowercase, remove newline and commas
+                text = record.content_stream().read().decode('utf-8').lower().replace('\n', '.').replace(',', ' ')
+                if text is None:
+                    processed += 1
+                    continue
+                else:
+                    # Basic contains check - issues with offensive terms list and context
+                    for term in slurs:
+                        if re.search(r'\b' + term + r'\b', text):
+                            data = [term, text]
+                            matches.loc[len(matches.index)] = data
+                            matches.to_csv(small_filename, mode='a', index=False, header=False)
+                            matches = matches[0:0]
+                            found_small += 1
+                    for term in large_slurs:
+                        if re.search(r'\b' + term + r'\b', text):
+                            data = [term, text]
+                            matches.loc[len(matches.index)] = data
+                            matches.to_csv(large_filename, mode='a', index=False, header=False)
+                            matches = matches[0:0]
+                            found_large += 1
 
-    text = get_WET_text(wet_record)
-    if text is None:
-        processed += 1
-        continue
-    else:
-        # Basic contains check - issues with offensive terms list and context
-        for term in slurs:
-            if re.search(r'\b' + term + r'\b', text):
-                data = [term, wet_url]
-                matches.loc[len(matches.index)] = data
-                matches.to_csv(filename, mode='a', index=False, header=False)
-                matches = matches[0:0]
-                # print(wet_record.rec_headers.get_header('WARC-Target-URI'))
-                # print("Term: " + term)
-                # print(text[:25]+"\n")
-                found += 1
-    # if matches.shape[0] >= 5:
-    #     matches.to_csv(filename, mode='a', index=False, header=False)
-    #     matches = matches[0:0]
     processed += 1
+    if processed == number_of_processses:
+        break
 
-matches.to_csv(filename, mode='a', index=False, header=False)
 print("Done :)")
