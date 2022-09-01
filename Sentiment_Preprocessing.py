@@ -39,7 +39,8 @@ def get_WET_text(record):
         return None
 
 
-file = pd.read_csv("matches.csv", sep=',', header=None, names=['word', 'url'])
+length = "short"
+file = pd.read_csv("matches3.csv", sep=',', header=None, names=['word', 'text'])
 dataset = file.drop_duplicates().reset_index(drop=True)
 
 
@@ -63,16 +64,16 @@ def text_to_word_list(text):
 found_sents = []
 
 for index, row in dataset.iterrows():
-    wet_file = get_file(row['url'])
-    wet_record = get_record_with_header(
-        wet_file,
-        header='WARC-Identified-Content-Language',
-        value="eng"
-    )
-    full_text = get_WET_text(wet_record).replace("\n", ".")
+    # wet_file = get_file(row['url'])
+    # wet_record = get_record_with_header(
+    #     wet_file,
+    #     header='WARC-Identified-Content-Language',
+    #     value="eng"
+    # )
+    # full_text = get_WET_text(wet_record).replace("\n", ".")
 
     # Split into sentences using fullstops
-    sentences_list = full_text.split('.')
+    sentences_list = row.text.split('.')
     for sentence in sentences_list:
         # Check if there is an exact match of the word in the sentence
         if re.search(r'\b' + row['word'] + r'\b', sentence):
@@ -100,7 +101,7 @@ start = time()
 w2v_model.train(sentences, total_examples=w2v_model.corpus_count, epochs=30, report_delay=1)
 print('Time to train the model: {} mins'.format(round((time() - start) / 60, 2)))
 w2v_model.init_sims(replace=True)
-w2v_model.save("word2vec.model")
+w2v_model.save("Models/"+length+".word2vec.model")
 
 file_export = pd.DataFrame(columns=['title'])
 for index, sent in enumerate(found_sents):
@@ -109,4 +110,4 @@ file_export['old_title'] = file_export.title
 file_export.old_title = file_export.old_title.str.join(' ')
 file_export.title = file_export.title.apply(lambda x: ' '.join(bigram[x]))
 
-file_export[['title']].to_csv('cleaned_dataset.csv', index=False)
+file_export[['title']].to_csv('Data/'+length+'_cleaned_dataset.csv', index=False)

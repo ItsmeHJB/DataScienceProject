@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ecd83a3f-3b6c-48f2-ba9b-a8c29b0727fc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/online_set_copy.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/online_set_copy.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/matches.csv" beforeDir="false" afterPath="$PROJECT_DIR$/matches.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/matches_large.csv" beforeDir="false" afterPath="$PROJECT_DIR$/matches_large.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/slur_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/slur_detection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/slur_detection_base_large.py" beforeDir="false" afterPath="$PROJECT_DIR$/slur_detection_base_large.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sentiment_Preprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/Sentiment_Preprocessing.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +44,7 @@
       <recent name="C:\Users\Helen\Documents\DataScienceProject" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.slur_detection (1)">
+  <component name="RunManager" selected="Python.Sentiment_Preprocessing (1)">
     <configuration name="KMeans_Sentiment" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="DataScienceProject" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -156,9 +152,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Sentiment_Preprocessing (1)" />
         <item itemvalue="Python.slur_detection (1)" />
         <item itemvalue="Python.KMeans_Sentiment" />
-        <item itemvalue="Python.Sentiment_Preprocessing (1)" />
         <item itemvalue="Python.Sentiment_Preprocessing" />
         <item itemvalue="Python.test" />
       </list>
@@ -187,20 +183,6 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/KMeans_Sentiment.py</url>
-          <line>15</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/KMeans_Sentiment.py</url>
-          <line>30</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="record.rec_headers.headers[2]" />
