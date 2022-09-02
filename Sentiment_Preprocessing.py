@@ -39,8 +39,8 @@ def get_WET_text(record):
         return None
 
 
-length = "short"
-file = pd.read_csv("matches3.csv", sep=',', header=None, names=['word', 'text'])
+length = "large"
+file = pd.read_csv("matches_large3.csv", sep=',', header=None, names=['word', 'text'])
 dataset = file.drop_duplicates().reset_index(drop=True)
 
 

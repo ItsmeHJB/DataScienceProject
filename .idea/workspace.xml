@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ecd83a3f-3b6c-48f2-ba9b-a8c29b0727fc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sentiment_Preprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/Sentiment_Preprocessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vader Sentiment.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Vader Sentiment.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +45,7 @@
       <recent name="C:\Users\Helen\Documents\DataScienceProject" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.VaderSentiment">
+  <component name="RunManager" selected="Python.KMeans_Sentiment">
     <configuration name="KMeans_Sentiment" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="DataScienceProject" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -151,9 +153,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.VaderSentiment" />
         <item itemvalue="Python.KMeans_Sentiment" />
         <item itemvalue="Python.Sentiment_Preprocessing (1)" />
+        <item itemvalue="Python.VaderSentiment" />
         <item itemvalue="Python.slur_detection (1)" />
         <item itemvalue="Python.Sentiment_Preprocessing" />
       </list>
@@ -180,16 +182,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/VaderSentiment.py</url>
-          <line>37</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
