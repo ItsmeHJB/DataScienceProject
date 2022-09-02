@@ -3,8 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="ecd83a3f-3b6c-48f2-ba9b-a8c29b0727fc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/large.word2vec.model" beforeDir="false" afterPath="$PROJECT_DIR$/Models/large.word2vec.model" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/short.word2vec.model" beforeDir="false" afterPath="$PROJECT_DIR$/Models/short.word2vec.model" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sentiment_Preprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/Sentiment_Preprocessing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Vader Sentiment.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Vader Sentiment.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/matches2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/matches_large2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/slur_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/slur_detection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +49,7 @@
       <recent name="C:\Users\Helen\Documents\DataScienceProject" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.KMeans_Sentiment">
+  <component name="RunManager" selected="Python.slur_detection (1)">
     <configuration name="KMeans_Sentiment" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="DataScienceProject" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -153,10 +157,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.KMeans_Sentiment" />
-        <item itemvalue="Python.Sentiment_Preprocessing (1)" />
-        <item itemvalue="Python.VaderSentiment" />
         <item itemvalue="Python.slur_detection (1)" />
+        <item itemvalue="Python.Sentiment_Preprocessing (1)" />
+        <item itemvalue="Python.KMeans_Sentiment" />
+        <item itemvalue="Python.VaderSentiment" />
         <item itemvalue="Python.Sentiment_Preprocessing" />
       </list>
     </recent_temporary>
