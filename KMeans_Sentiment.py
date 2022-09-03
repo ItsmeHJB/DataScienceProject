@@ -1,11 +1,7 @@
 import numpy as np
-import pandas as pd
 from gensim.models import Word2Vec
 from sklearn.cluster import KMeans
 from sklearn import metrics
-from IPython.display import display
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, f1_score
 import matplotlib.pyplot as plt
 
 length = 'short'

@@ -2,45 +2,15 @@
 import re
 import pandas as pd
 from re import sub
-import requests
-from warcio.archiveiterator import ArchiveIterator
 from gensim.models.phrases import Phrases, Phraser
 from time import time
 from gensim.models import Word2Vec
 import multiprocessing
 
 
-def get_file(url):
-    return requests.get(url, stream=True)
-
-
-def wrapper(gen):
-    while True:
-        try:
-            yield next(gen)
-        except StopIteration:
-            break
-        except Exception as e:
-            print(e)
-
-
-def get_record_with_header(warc_file, header, value):
-    iterobject = wrapper(ArchiveIterator(warc_file.raw))
-    for record in iterobject:
-        if record.rec_headers.get_header(header) == value:
-            return record
-
-
-def get_WET_text(record):
-    if record:
-        # Reads text, decodes it using utf-8, makes it lowercase
-        return record.content_stream().read().decode('utf-8').lower()
-    else:
-        return None
-
-
-length = "short"
-file = pd.read_csv("matches_short3.csv", sep=',', header=None, names=['word', 'text'])
+length = "large"
+version = "3"
+file = pd.read_csv("matches_"+length+version+".csv", sep=',', header=None, names=['word', 'text'])
 dataset = file.drop_duplicates().reset_index(drop=True)
 
 
@@ -64,17 +34,9 @@ def text_to_word_list(text):
 found_sents = []
 
 for index, row in dataset.iterrows():
-    # wet_file = get_file(row['url'])
-    # wet_record = get_record_with_header(
-    #     wet_file,
-    #     header='WARC-Identified-Content-Language',
-    #     value="eng"
-    # )
-    # full_text = get_WET_text(wet_record).replace("\n", ".")
-
     # Split into sentences using fullstops
     sentences_list = row.text.split('.')
-    for sentence in sentences_list:
+    for sent_ind, sentence in enumerate(sentences_list):
         # Check if there is an exact match of the word in the sentence
         if re.search(r'\b' + row['word'] + r'\b', sentence):
             found_sents.append(text_to_word_list(sentence))
