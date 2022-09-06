@@ -8,8 +8,8 @@ from gensim.models import Word2Vec
 import multiprocessing
 
 
-length = "short"
-version = "2"
+length = "low"
+version = "3"
 file = pd.read_csv("matches_"+length+version+".csv", sep=',', header=None, names=['word', 'text'])
 dataset = file.drop_duplicates().reset_index(drop=True)
 

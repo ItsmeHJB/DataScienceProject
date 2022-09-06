@@ -4,7 +4,7 @@ from sklearn.cluster import KMeans
 from sklearn import metrics
 import matplotlib.pyplot as plt
 
-length = 'large'
+length = 'high'
 word_vectors = Word2Vec.load("Models/" + length + ".word2vec.model").wv
 
 model = KMeans(n_clusters=2,

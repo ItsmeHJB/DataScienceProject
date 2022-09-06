@@ -32,8 +32,8 @@ prefix_url = 'https://data.commoncrawl.org/'
 warc_match = re.compile('warc')
 wet_sub = 'wet'
 ext_sub = 'warc.wet'
-slurs_file = "Data/slur_subset.csv"
-large_slurs_file = "Data/slur_subset_large.csv"
+slurs_file = "Data/slur_subset_low.csv"
+large_slurs_file = "Data/slur_subset_high.csv"
 
 read_all = True
 if read_all:
