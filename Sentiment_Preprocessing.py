@@ -8,8 +8,8 @@ from gensim.models import Word2Vec
 import multiprocessing
 
 
-length = "large"
-version = "3"
+length = "short"
+version = "2"
 file = pd.read_csv("matches_"+length+version+".csv", sep=',', header=None, names=['word', 'text'])
 dataset = file.drop_duplicates().reset_index(drop=True)
 
@@ -46,7 +46,7 @@ bigram = Phraser(phrases)
 sentences = bigram[found_sents]
 print(sentences[1])
 
-w2v_model = Word2Vec(min_count=3,
+w2v_model = Word2Vec(min_count=2,
                      window=4,
                      vector_size=300,
                      sample=1e-5,
@@ -56,7 +56,7 @@ w2v_model = Word2Vec(min_count=3,
                      workers=multiprocessing.cpu_count()-1)
 
 start = time()
-w2v_model.build_vocab(sentences, progress_per=50000)
+w2v_model.build_vocab(sentences)
 print('Time to build vocab: {} mins'.format(round((time() - start) / 60, 2)))
 
 start = time()

@@ -62,13 +62,13 @@ found_small = 0
 found_large = 0
 start = time.perf_counter()
 # 60 for v3, 250 for v4
-number_of_processses = 250
+number_of_processses = 200
 
 # 10 for v3, 25 for v4
 random.seed(25)
 for index, row in df.iterrows():
     # Use to skip to certain row index
-    if processed < 115:
+    if processed < 166:
         processed += 1
         continue
     if processed % 1 == 0:

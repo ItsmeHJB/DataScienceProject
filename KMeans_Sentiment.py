@@ -4,7 +4,7 @@ from sklearn.cluster import KMeans
 from sklearn import metrics
 import matplotlib.pyplot as plt
 
-length = 'short'
+length = 'large'
 word_vectors = Word2Vec.load("Models/" + length + ".word2vec.model").wv
 
 model = KMeans(n_clusters=2,
@@ -20,7 +20,7 @@ print(metrics.silhouette_score(word_vectors.vectors.astype('double'), labels))
 # High score means better clusters seperation from each other
 print(metrics.calinski_harabasz_score(word_vectors.vectors.astype('double'), labels))  #
 # Inverse of above, smaller is better
-print(metrics.davies_bouldin_score(word_vectors.vectors.astype('double'), labels))
+# print(metrics.davies_bouldin_score(word_vectors.vectors.astype('double'), labels))
 
 uniq_labels = np.unique(labels)
 centroids = model.cluster_centers_
