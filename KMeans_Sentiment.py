@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from gensim.models import Word2Vec
 from sklearn.cluster import KMeans
 from sklearn import metrics
@@ -31,3 +32,15 @@ for i in uniq_labels:
 plt.scatter(centroids[:, 0], centroids[:, 1], s=80, color='k')
 plt.legend()
 plt.show()
+
+unique, counts = np.unique(labels, return_counts=True)
+print(dict(zip(unique, counts)))
+
+# print(np.where(labels == 1))
+# version = "3"
+# dataset = pd.read_csv('Data/'+length+'_sent_dataset_'+version+'.csv')
+#
+# tmp = np.where(labels == 1)
+# for index in np.where(labels == 1)[0]:
+#     print(dataset.iloc[[index]])
+

@@ -9,7 +9,7 @@ import multiprocessing
 
 
 length = "low"
-version = "3"
+version = "2"
 file = pd.read_csv("matches_"+length+version+".csv", sep=',', header=None, names=['word', 'text'])
 dataset = file.drop_duplicates().reset_index(drop=True)
 
@@ -32,6 +32,7 @@ def text_to_word_list(text):
 
 
 found_sents = []
+joint_word = []
 
 for index, row in dataset.iterrows():
     # Split into sentences using fullstops
@@ -40,6 +41,12 @@ for index, row in dataset.iterrows():
         # Check if there is an exact match of the word in the sentence
         if re.search(r'\b' + row['word'] + r'\b', sentence):
             found_sents.append(text_to_word_list(sentence))
+            joint_word.append(row['word'])
+
+sent_df = pd.DataFrame(columns=['word', 'sent'])
+sent_df['word'] = joint_word
+sent_df['sent'] = found_sents
+sent_df.to_csv('Data/'+length+'_sent_dataset_'+version+'.csv', index=False)
 
 phrases = Phrases(found_sents, min_count=1, progress_per=50000)
 bigram = Phraser(phrases)
@@ -64,12 +71,3 @@ w2v_model.train(sentences, total_examples=w2v_model.corpus_count, epochs=30, rep
 print('Time to train the model: {} mins'.format(round((time() - start) / 60, 2)))
 w2v_model.init_sims(replace=True)
 w2v_model.save("Models/"+length+".word2vec.model")
-
-file_export = pd.DataFrame(columns=['title'])
-for index, sent in enumerate(found_sents):
-    file_export.at[index+1, 'title'] = sent
-file_export['old_title'] = file_export.title
-file_export.old_title = file_export.old_title.str.join(' ')
-file_export.title = file_export.title.apply(lambda x: ' '.join(bigram[x]))
-
-file_export[['title']].to_csv('Data/'+length+'_cleaned_dataset.csv', index=False)
