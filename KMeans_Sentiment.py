@@ -7,8 +7,8 @@ from sklearn import metrics
 import matplotlib.pyplot as plt
 
 
-length = 'low'
-version = "2"
+length = "high"
+version = "1"
 word_vectors = Word2Vec.load("Models/"+length+".word2vec.model").wv
 
 model = KMeans(n_clusters=2,
@@ -70,7 +70,7 @@ transformed = tfidf.transform(file_weighting.sent)
 
 
 def create_tfidf_dictionary(x, transformed_file, features):
-    '''
+    """
     create dictionary for each input sentence x, where each word has assigned its tfidf score
 
     inspired  by function from this wonderful article:
@@ -80,7 +80,7 @@ def create_tfidf_dictionary(x, transformed_file, features):
     transformed_file - all sentences transformed with TfidfVectorizer
     features - names of all words in corpus used in TfidfVectorizer
 
-    '''
+    """
     vector_coo = transformed_file[x.name].tocoo()
     vector_coo.col = features.iloc[vector_coo.col].values
     dict_from_coo = dict(zip(vector_coo.col, vector_coo.data))
@@ -88,12 +88,12 @@ def create_tfidf_dictionary(x, transformed_file, features):
 
 
 def replace_tfidf_words(x, transformed_file, features):
-    '''
+    """
     replacing each word with it's calculated tfidf dictionary with scores of each word
     x - row of dataframe, containing sentences, and their indexes,
     transformed_file - all sentences transformed with TfidfVectorizer
     features - names of all words in corpus used in TfidfVectorizer
-    '''
+    """
     dictionary = create_tfidf_dictionary(x, transformed_file, features)
     return list(map(lambda y: dictionary[f'{y}'], x.sent.split()))
 
@@ -103,9 +103,9 @@ replaced_tfidf_scores = file_weighting.apply(lambda x: replace_tfidf_words(x, tr
 
 
 def replace_sentiment_words(word, sentiment_dict):
-    '''
+    """
     replacing each word with its associated sentiment score from sentiment dict
-    '''
+    """
     try:
         out = sentiment_dict[word]
     except KeyError:
@@ -125,4 +125,3 @@ replacement_df['prediction'] = (replacement_df.sentiment_rate > 0).astype('int8'
 print(replacement_df.value_counts(['prediction']))
 
 replacement_df.to_csv("Output/KMeans"+length+version+"_predictions.csv", index=False)
-
