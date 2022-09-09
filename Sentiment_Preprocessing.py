@@ -71,3 +71,9 @@ w2v_model.train(sentences, total_examples=w2v_model.corpus_count, epochs=30, rep
 print('Time to train the model: {} mins'.format(round((time() - start) / 60, 2)))
 w2v_model.init_sims(replace=True)
 w2v_model.save("Models/"+length+".word2vec.model")
+
+file_export = sent_df.copy()
+file_export['old_sent'] = file_export.sent
+file_export.old_sent = file_export.old_sent.str.join(' ')
+file_export.sent = file_export.sent.apply(lambda x: ' '.join(bigram[x]))
+file_export[['sent']].to_csv('cleaned_dataset.csv', index=False)
